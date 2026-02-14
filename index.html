@@ -3,230 +3,243 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Girasoles Deluxe 🌻</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;800&display=swap" rel="stylesheet">
+<title>Noche Mágica 🌙</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    font-family:Arial, sans-serif;
+}
+
 body{
-    min-height:100vh;
-    font-family:'Poppins',sans-serif;
-    background: radial-gradient(circle at top,#1a1a3c,#0f0c29 60%);
-    overflow-x:hidden;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+    background: radial-gradient(circle at top,#1a1a3c 0%,#0f0c29 60%,#000 100%);
 }
 
-/* Luna */
-.luna{
-    position:absolute;
-    top:8vh;
-    right:8vw;
-    width:15vw;
-    height:15vw;
-    max-width:120px;
-    max-height:120px;
-    background:radial-gradient(circle,#fff,#ccc);
-    border-radius:50%;
-    box-shadow:0 0 40px white;
-    opacity:0.8;
+/* Canvas */
+canvas{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:0;
 }
-
-/* Estrellas */
-.estrella{
-    position:absolute;
-    width:4px;
-    height:4px;
-    background:white;
-    border-radius:50%;
-    animation: brillar 2s infinite alternate;
-}
-@keyframes brillar{from{opacity:0.2;}to{opacity:1;}}
 
 /* Texto */
 .texto{
     position:absolute;
     top:5vh;
+    width:100%;
     text-align:center;
     color:white;
-    max-width:90%;
-    padding:0 10px;
+    z-index:2;
 }
+
 .texto h1{
-    font-size:clamp(26px,5vw,45px);
-    font-weight:800;
-    text-shadow:0 0 20px #ff4da6;
+    font-size:clamp(28px,5vw,45px);
 }
+
 .texto p{
     margin-top:10px;
-    font-size:clamp(14px,2.5vw,18px);
-}
-.poema{
-    margin-top:12px;
-    font-size:clamp(13px,2.3vw,16px);
-    color:#ffeb3b;
-    line-height:1.5;
-}
-
-/* Pétalos */
-.petalo{
-    position:absolute;
-    width:15px;
-    height:15px;
-    background: radial-gradient(circle at top, #ffeb3b, #fbc02d);
-    border-radius:50%;
-    animation: caer 6s linear infinite;
     opacity:0.9;
 }
-@keyframes caer{
-    0%{transform:translateY(-10vh) translateX(0) rotate(0deg);}
-    100%{transform:translateY(100vh) translateX(30px) rotate(180deg);}
-}
 
-/* Corazones */
-.corazon{
-    position:absolute;
-    width:18px;
-    height:18px;
-    background: radial-gradient(circle at top left, #ff4da6, #ff1a75);
-    transform: rotate(45deg);
-    border-radius:50% 50% 0 0;
-    animation: flotar 5s linear infinite;
-}
-@keyframes flotar{
-    0%{transform:translate(0,0) rotate(45deg);opacity:0;}
-    50%{transform:translate(40px,-200px) rotate(45deg);opacity:1;}
-    100%{transform:translate(80px,-400px) rotate(45deg);opacity:0;}
-}
-
-/* Botón */
+/* BOTÓN */
 .boton{
     position:absolute;
-    bottom:4vh;
-    padding:12px 25px;
-    background:#ff1a75;
-    color:white;
+    bottom:6vh;
+    left:50%;
+    transform:translateX(-50%);
+    padding:14px 30px;
     border:none;
-    border-radius:30px;
-    cursor:pointer;
+    border-radius:40px;
+    background:gold;
+    color:black;
     font-weight:bold;
-    box-shadow:0 0 15px #ff1a75;
+    cursor:pointer;
+    z-index:3;
     transition:0.3s;
 }
+
 .boton:hover{
-    transform:scale(1.1);
-    box-shadow:0 0 25px #ff4da6;
+    transform:translateX(-50%) scale(1.1);
 }
 
-/* Canvas */
-canvas{
+/* MENSAJE CENTRADO */
+.mensaje{
     position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%) scale(0.7);
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(15px);
+    padding:30px 40px;
+    border-radius:25px;
+    color:white;
+    opacity:0;
+    transition:0.4s;
+    z-index:4;
+    text-align:center;
+    max-width:85%;
+    line-height:1.7;
+    font-size:clamp(16px,2vw,22px);
+}
+
+.mensaje.activo{
+    opacity:1;
+    transform:translate(-50%,-50%) scale(1);
+}
+
+/* Fondo oscuro cuando mensaje aparece */
+.overlay{
+    position:fixed;
     width:100%;
     height:100%;
+    background:rgba(0,0,0,0.6);
+    opacity:0;
+    transition:0.4s;
+    z-index:3;
+}
+
+.overlay.activo{
+    opacity:1;
 }
 </style>
 </head>
 <body>
 
-<div class="luna"></div>
+<canvas id="canvas"></canvas>
 
 <div class="texto">
-    <h1>Para Ti 🌻🌻🌻</h1>
-    <p>Que estos girasoles llenen tu vida ✨</p>
-    <div class="poema">
-        🌸 Que la luz de la luna abrace tus sueños.<br>
-        🌼 Que cada estrella te recuerde lo especial que eres.<br>
-        💛 Que los girasoles iluminen tu corazón cada día.<br>
-        💖 Que siempre floten los recuerdos más dulces a tu alrededor.
-    </div>
+    <h1>Bajo la Luna 🌙</h1>
+    <p>Los girasoles también brillan de noche ✨</p>
 </div>
 
-<!-- Estrellas -->
-<div class="estrella" style="top:20%; left:15%;"></div>
-<div class="estrella" style="top:30%; left:40%; animation-delay:1s;"></div>
-<div class="estrella" style="top:15%; left:70%; animation-delay:2s;"></div>
-<div class="estrella" style="top:25%; left:85%; animation-delay:3s;"></div>
+<div id="overlay" class="overlay"></div>
 
-<!-- Pétalos -->
-<div class="petalo" style="left:10%; animation-delay:0s;"></div>
-<div class="petalo" style="left:30%; animation-delay:2s;"></div>
-<div class="petalo" style="left:60%; animation-delay:1s;"></div>
-<div class="petalo" style="left:80%; animation-delay:3s;"></div>
+<div id="mensaje" class="mensaje">
+🌙  
 
-<!-- Corazones -->
-<div class="corazon" style="left:50px; animation-delay:0s;"></div>
-<div class="corazon" style="left:120px; animation-delay:1s;"></div>
-<div class="corazon" style="left:200px; animation-delay:2s;"></div>
+No sé si el universo escribe historias en silencio,  
+pero si lo hace… estoy seguro de que  
+la tuya brilla distinto.  
 
-<button class="boton" onclick="alert('Siempre serás especial 💕')">Toca Aquí 💌</button>
+🌻  
 
-<canvas id="florCanvas"></canvas>
+Eres de esas personas que no solo iluminan un lugar,  
+sino que cambian la energía de todo lo que tocan.  
+
+Incluso en tus días más oscuros,  
+sigues siendo luz.  
+
+✨  
+
+Y si alguna vez el mundo te pesa,  
+recuerda esto:  
+
+Hay algo en ti que no se apaga.  
+Algo que ni la noche más profunda puede ocultar.  
+
+💛  
+
+Nunca dudes de lo increíble que eres.
+</div>
+
+
+<button id="boton" class="boton" onclick="mostrarMensaje()">Toca Aquí 💌</button>
 
 <script>
-const canvas=document.getElementById('florCanvas');
-const ctx=canvas.getContext('2d');
+const canvas=document.getElementById("canvas");
+const ctx=canvas.getContext("2d");
 
 function resizeCanvas(){
-    canvas.width=window.innerWidth;
-    canvas.height=window.innerHeight;
+    const dpr=window.devicePixelRatio||1;
+    canvas.width=window.innerWidth*dpr;
+    canvas.height=window.innerHeight*dpr;
+    canvas.style.width=window.innerWidth+"px";
+    canvas.style.height=window.innerHeight+"px";
+    ctx.setTransform(dpr,0,0,dpr,0,0);
 }
 resizeCanvas();
+window.addEventListener("resize",resizeCanvas);
 
-const numPetalos=16;
-const lineasPorPetalo=25;
-const colorOro="rgba(255,200,50,0.4)";
+/* Estrellas */
+let estrellas=[];
+for(let i=0;i<100;i++){
+    estrellas.push({
+        x:Math.random()*window.innerWidth,
+        y:Math.random()*window.innerHeight,
+        size:Math.random()*2,
+        alpha:Math.random()
+    });
+}
 
 function dibujarFlor(x,y,escala){
     ctx.save();
     ctx.translate(x,y);
     ctx.scale(escala,escala);
-    ctx.globalCompositeOperation='lighter';
-    ctx.strokeStyle=colorOro;
-    ctx.lineWidth=1;
 
-    for(let i=0;i<numPetalos;i++){
-        ctx.save();
-        ctx.rotate((i*Math.PI*2)/numPetalos);
-        for(let j=0;j<lineasPorPetalo;j++){
-            ctx.beginPath();
-            let offset=j*4;
-            ctx.moveTo(40,0);
-            ctx.quadraticCurveTo(180+offset,120,320,0);
-            ctx.quadraticCurveTo(180+offset,-120,40,0);
-            ctx.stroke();
-        }
-        ctx.restore();
+    for(let i=0;i<16;i++){
+        ctx.rotate(Math.PI/8);
+        ctx.beginPath();
+        ctx.fillStyle="orange";
+        ctx.ellipse(0,50,18,50,0,0,Math.PI*2);
+        ctx.fill();
     }
+
+    ctx.beginPath();
+    ctx.fillStyle="#5d2c04";
+    ctx.arc(0,0,35,0,Math.PI*2);
+    ctx.fill();
+
     ctx.restore();
 }
 
-function dibujarArte(){
+let t=0;
+
+function animar(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
-    const w=canvas.width;
-    const h=canvas.height;
 
-    const escalaGrande=w<600?0.5:0.7;
-    const escalaMediana=w<600?0.3:0.45;
-    const escalaPeque=w<600?0.2:0.3;
+    const w=canvas.width/(window.devicePixelRatio||1);
+    const h=canvas.height/(window.devicePixelRatio||1);
 
-    dibujarFlor(w*0.5,h*0.65,escalaGrande);
+    estrellas.forEach(e=>{
+        ctx.beginPath();
+        ctx.fillStyle="rgba(255,255,255,"+e.alpha+")";
+        ctx.arc(e.x,e.y,e.size,0,Math.PI*2);
+        ctx.fill();
+        e.alpha+=0.01*(Math.random()-0.5);
+    });
 
-    dibujarFlor(w*0.85,h*0.30,escalaMediana);
-    dibujarFlor(w*0.90,h*0.55,escalaMediana);
-    dibujarFlor(w*0.75,h*0.85,escalaPeque);
+    t+=0.01;
+    dibujarFlor(w*0.5,h*0.65,0.8+Math.sin(t)*0.05);
+    dibujarFlor(w*0.85,h*0.3,0.4);
+    dibujarFlor(w*0.15,h*0.4,0.4);
 
-    dibujarFlor(w*0.15,h*0.35,escalaMediana);
-    dibujarFlor(w*0.10,h*0.60,escalaMediana);
-    dibujarFlor(w*0.25,h*0.90,escalaPeque);
+    requestAnimationFrame(animar);
+}
+animar();
+
+function mostrarMensaje(){
+    const mensaje=document.getElementById("mensaje");
+    const overlay=document.getElementById("overlay");
+    const boton=document.getElementById("boton");
+
+    mensaje.classList.toggle("activo");
+    overlay.classList.toggle("activo");
+
+    if(mensaje.classList.contains("activo")){
+        boton.innerText="Cerrar 💛";
+    }else{
+        boton.innerText="Toca Aquí 💌";
+    }
 }
 
-dibujarArte();
-window.addEventListener('resize',()=>{
-    resizeCanvas();
-    dibujarArte();
-});
+document.getElementById("overlay").onclick=mostrarMensaje;
 </script>
 
 </body>
