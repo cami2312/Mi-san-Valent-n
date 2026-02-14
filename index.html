@@ -1,120 +1,233 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>San Valentín 🌸💖</title>
+<title>Girasoles Deluxe 🌻</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;800&display=swap" rel="stylesheet">
 
 <style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
 body{
-    margin:0;
-    height:100vh;
+    min-height:100vh;
+    font-family:'Poppins',sans-serif;
+    background: radial-gradient(circle at top,#1a1a3c,#0f0c29 60%);
+    overflow-x:hidden;
     display:flex;
     justify-content:center;
     align-items:center;
-    background:linear-gradient(135deg,#ff4e8a,#ff9ac2,#ffc1da);
-    font-family:'Segoe UI', sans-serif;
-    overflow:hidden;
 }
 
-/* Flores decorativas */
-.flor{
+/* Luna */
+.luna{
     position:absolute;
-    font-size:30px;
-    opacity:0.7;
+    top:8vh;
+    right:8vw;
+    width:15vw;
+    height:15vw;
+    max-width:120px;
+    max-height:120px;
+    background:radial-gradient(circle,#fff,#ccc);
+    border-radius:50%;
+    box-shadow:0 0 40px white;
+    opacity:0.8;
 }
 
-.flor1{ top:20px; left:20px; }
-.flor2{ bottom:20px; right:20px; }
-.flor3{ top:30px; right:50px; }
-.flor4{ bottom:40px; left:60px; }
-
-/* Tarjeta principal */
-.tarjeta{
-    display:flex;
-    align-items:center;
-    gap:40px;
+/* Estrellas */
+.estrella{
+    position:absolute;
+    width:4px;
+    height:4px;
     background:white;
-    padding:50px;
-    border-radius:35px;
-    box-shadow:0 20px 60px rgba(0,0,0,0.3);
-    max-width:900px;
-    position:relative;
-    z-index:2;
+    border-radius:50%;
+    animation: brillar 2s infinite alternate;
 }
-
-/* Imagen */
-.tarjeta img{
-    width:300px;
-    border-radius:25px;
-    border:8px solid #ff4e8a;
-    box-shadow:0 15px 40px rgba(0,0,0,0.4);
-    animation:latido 2s infinite;
-}
-
-@keyframes latido{
-    0%{transform:scale(1);}
-    50%{transform:scale(1.05);}
-    100%{transform:scale(1);}
-}
+@keyframes brillar{from{opacity:0.2;}to{opacity:1;}}
 
 /* Texto */
-.mensaje{
-    font-size:22px;
-    color:#444;
-    max-width:420px;
-}
-
-.mensaje h1{
-    color:#ff2e63;
-    margin-bottom:20px;
-}
-
-/* Corazones flotando */
-.heart{
+.texto{
     position:absolute;
-    top:-20px;
-    animation:caer linear infinite;
+    top:5vh;
+    text-align:center;
+    color:white;
+    max-width:90%;
+    padding:0 10px;
+}
+.texto h1{
+    font-size:clamp(26px,5vw,45px);
+    font-weight:800;
+    text-shadow:0 0 20px #ff4da6;
+}
+.texto p{
+    margin-top:10px;
+    font-size:clamp(14px,2.5vw,18px);
+}
+.poema{
+    margin-top:12px;
+    font-size:clamp(13px,2.3vw,16px);
+    color:#ffeb3b;
+    line-height:1.5;
 }
 
+/* Pétalos */
+.petalo{
+    position:absolute;
+    width:15px;
+    height:15px;
+    background: radial-gradient(circle at top, #ffeb3b, #fbc02d);
+    border-radius:50%;
+    animation: caer 6s linear infinite;
+    opacity:0.9;
+}
 @keyframes caer{
-    to{
-        transform:translateY(110vh);
-    }
+    0%{transform:translateY(-10vh) translateX(0) rotate(0deg);}
+    100%{transform:translateY(100vh) translateX(30px) rotate(180deg);}
+}
+
+/* Corazones */
+.corazon{
+    position:absolute;
+    width:18px;
+    height:18px;
+    background: radial-gradient(circle at top left, #ff4da6, #ff1a75);
+    transform: rotate(45deg);
+    border-radius:50% 50% 0 0;
+    animation: flotar 5s linear infinite;
+}
+@keyframes flotar{
+    0%{transform:translate(0,0) rotate(45deg);opacity:0;}
+    50%{transform:translate(40px,-200px) rotate(45deg);opacity:1;}
+    100%{transform:translate(80px,-400px) rotate(45deg);opacity:0;}
+}
+
+/* Botón */
+.boton{
+    position:absolute;
+    bottom:4vh;
+    padding:12px 25px;
+    background:#ff1a75;
+    color:white;
+    border:none;
+    border-radius:30px;
+    cursor:pointer;
+    font-weight:bold;
+    box-shadow:0 0 15px #ff1a75;
+    transition:0.3s;
+}
+.boton:hover{
+    transform:scale(1.1);
+    box-shadow:0 0 25px #ff4da6;
+}
+
+/* Canvas */
+canvas{
+    position:absolute;
+    width:100%;
+    height:100%;
 }
 </style>
 </head>
-
 <body>
 
-<div class="flor flor1">🌸</div>
-<div class="flor flor2">🌹</div>
-<div class="flor flor3">🌷</div>
-<div class="flor flor4">💐</div>
+<div class="luna"></div>
 
-<div class="tarjeta">
-    <img src="foto.png" alt="Nuestra foto 💖">
-
-    <div class="mensaje">
-        <h1>Feliz San Valentín 💖</h1>
-        Desde que llegaste a mi vida todo se siente más bonito ✨<br><br>
-        Tu sonrisa ilumina mis días y tu mirada me da tranquilidad 💕<br><br>
-        No sé qué nos espera mañana…<br>
-        pero hoy quiero elegirte a ti 🌹
+<div class="texto">
+    <h1>Para Ti 🌻🌻🌻</h1>
+    <p>Que estos girasoles llenen tu vida ✨</p>
+    <div class="poema">
+        🌸 Que la luz de la luna abrace tus sueños.<br>
+        🌼 Que cada estrella te recuerde lo especial que eres.<br>
+        💛 Que los girasoles iluminen tu corazón cada día.<br>
+        💖 Que siempre floten los recuerdos más dulces a tu alrededor.
     </div>
 </div>
 
+<!-- Estrellas -->
+<div class="estrella" style="top:20%; left:15%;"></div>
+<div class="estrella" style="top:30%; left:40%; animation-delay:1s;"></div>
+<div class="estrella" style="top:15%; left:70%; animation-delay:2s;"></div>
+<div class="estrella" style="top:25%; left:85%; animation-delay:3s;"></div>
+
+<!-- Pétalos -->
+<div class="petalo" style="left:10%; animation-delay:0s;"></div>
+<div class="petalo" style="left:30%; animation-delay:2s;"></div>
+<div class="petalo" style="left:60%; animation-delay:1s;"></div>
+<div class="petalo" style="left:80%; animation-delay:3s;"></div>
+
+<!-- Corazones -->
+<div class="corazon" style="left:50px; animation-delay:0s;"></div>
+<div class="corazon" style="left:120px; animation-delay:1s;"></div>
+<div class="corazon" style="left:200px; animation-delay:2s;"></div>
+
+<button class="boton" onclick="alert('Siempre serás especial 💕')">Toca Aquí 💌</button>
+
+<canvas id="florCanvas"></canvas>
+
 <script>
-// Lluvia de corazones
-for(let i=0; i<40; i++){
-    let heart = document.createElement("div");
-    heart.className="heart";
-    heart.innerHTML="💖";
-    heart.style.left=Math.random()*100+"vw";
-    heart.style.animationDuration=(Math.random()*4+3)+"s";
-    heart.style.fontSize=(Math.random()*25+15)+"px";
-    document.body.appendChild(heart);
+const canvas=document.getElementById('florCanvas');
+const ctx=canvas.getContext('2d');
+
+function resizeCanvas(){
+    canvas.width=window.innerWidth;
+    canvas.height=window.innerHeight;
 }
+resizeCanvas();
+
+const numPetalos=16;
+const lineasPorPetalo=25;
+const colorOro="rgba(255,200,50,0.4)";
+
+function dibujarFlor(x,y,escala){
+    ctx.save();
+    ctx.translate(x,y);
+    ctx.scale(escala,escala);
+    ctx.globalCompositeOperation='lighter';
+    ctx.strokeStyle=colorOro;
+    ctx.lineWidth=1;
+
+    for(let i=0;i<numPetalos;i++){
+        ctx.save();
+        ctx.rotate((i*Math.PI*2)/numPetalos);
+        for(let j=0;j<lineasPorPetalo;j++){
+            ctx.beginPath();
+            let offset=j*4;
+            ctx.moveTo(40,0);
+            ctx.quadraticCurveTo(180+offset,120,320,0);
+            ctx.quadraticCurveTo(180+offset,-120,40,0);
+            ctx.stroke();
+        }
+        ctx.restore();
+    }
+    ctx.restore();
+}
+
+function dibujarArte(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    const w=canvas.width;
+    const h=canvas.height;
+
+    const escalaGrande=w<600?0.5:0.7;
+    const escalaMediana=w<600?0.3:0.45;
+    const escalaPeque=w<600?0.2:0.3;
+
+    dibujarFlor(w*0.5,h*0.65,escalaGrande);
+
+    dibujarFlor(w*0.85,h*0.30,escalaMediana);
+    dibujarFlor(w*0.90,h*0.55,escalaMediana);
+    dibujarFlor(w*0.75,h*0.85,escalaPeque);
+
+    dibujarFlor(w*0.15,h*0.35,escalaMediana);
+    dibujarFlor(w*0.10,h*0.60,escalaMediana);
+    dibujarFlor(w*0.25,h*0.90,escalaPeque);
+}
+
+dibujarArte();
+window.addEventListener('resize',()=>{
+    resizeCanvas();
+    dibujarArte();
+});
 </script>
 
 </body>
