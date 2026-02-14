@@ -18,6 +18,37 @@ html,body{
 body{
     background: radial-gradient(circle at top,#1a1a3c 0%,#0f0c29 60%,#000 100%);
 }
+/* 📱 Ajustes específicos para celulares pequeños */
+@media (max-width:600px){
+
+    .texto{
+        top:3vh;
+        padding:0 15px;
+    }
+
+    .texto h1{
+        font-size:22px;
+    }
+
+    .texto p{
+        font-size:14px;
+    }
+
+    .boton{
+        bottom:4vh;
+        padding:10px 20px;
+        font-size:14px;
+    }
+
+    .mensaje{
+        width:90%;
+        padding:20px;
+        font-size:15px;
+        max-height:70vh;
+        overflow-y:auto;
+    }
+
+}
 
 /* Canvas */
 canvas{
@@ -244,3 +275,4 @@ document.getElementById("overlay").onclick=mostrarMensaje;
 
 </body>
 </html>
+
